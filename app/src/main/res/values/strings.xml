@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">BookShelf</string>
+
+    <string-array name="bookTitles">
+        <string>The Mirror &amp; The Light</string>
+        <string>Where the Crawdads Sing</string>
+        <string>Untamed</string>
+        <string>The Mamba Mentality: How I Play</string>
+        <string>Little Fires Everywhere</string>
+        <string>Normal People</string>
+        <string>Capital and Ideology</string>
+        <string>Becoming</string>
+        <string>The Hunting Party</string>
+        <string>Thinking, Fast and Slow</string>
+    </string-array>
+
+    <string-array name="bookAuthors">
+        <string>Hilary Mantel</string>
+        <string>Delia Owens</string>
+        <string>Glennon Doyle</string>
+        <string>Kobe Bryant</string>
+        <string>Celeste Ng</string>
+        <string>Sally Rooney</string>
+        <string>Thomas Piketty</string>
+        <string>Michelle Obama</string>
+        <string>Lucy Foley</string>
+        <string>Daniel Kahneman</string>
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
