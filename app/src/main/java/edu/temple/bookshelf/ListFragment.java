@@ -8,6 +8,7 @@ import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -20,11 +21,8 @@ import java.util.HashMap;
  * create an instance of this fragment.
  */
 public class ListFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "list";
-
-    private ArrayList<HashMap<String, String>> list;
+    private static final String ARG_PARAM1 = "list";    //bundle key for fragment
+    private ArrayList<HashMap<String, String>> list;    //the "bookshelf"
 
     // Required empty public constructor
     public ListFragment(){}
@@ -36,12 +34,11 @@ public class ListFragment extends Fragment {
      * @param param1 Parameter 1.
      * @return A new instance of fragment ListFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static ListFragment newInstance(ArrayList<HashMap<String, String>> param1) {
         ListFragment fragment = new ListFragment();
         Bundle args = new Bundle();
 
-        //put the list into the bundle for this fragment
+        //put the arrayList into the bundle for this fragment
         args.putSerializable(ARG_PARAM1, param1);
         fragment.setArguments(args);
         return fragment;
@@ -65,9 +62,14 @@ public class ListFragment extends Fragment {
 
         //TODO: find the list, create and assign an adapter to the list, and set an onClickListener
         ListView listView = view.findViewById(R.id.listView);
+        BookListAdapter bookListAdapter = new BookListAdapter(getContext(), list);
 
-        //onclick
-        //  bookClickedInterface.openDetails(book);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                bookClickedInterface.openDetails(list.get(position));
+            }
+        });
 
         return view;
     }
