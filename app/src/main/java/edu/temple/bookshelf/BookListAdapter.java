@@ -6,24 +6,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class BookListAdapter extends BaseAdapter {
+public class BookListAdapter extends BaseAdapter implements ListAdapter {
 
-    Context c;
-    ArrayList<HashMap<String, String>> books;
+    private Context c;
+    private ArrayList<HashMap<String, String>> books;
 
-    public BookListAdapter(Context c, ArrayList<HashMap<String, String>> books) {
-        this(c);
-        this.books = books;
-    }
-
-    //Constructor with only context
-    public BookListAdapter(Context c) {
+    BookListAdapter(Context c, ArrayList<HashMap<String, String>> books) {
         this.c = c;
+        this.books = books;
     }
 
     /**
@@ -80,8 +76,8 @@ public class BookListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         //view will be a list_item layout with two textviews
-        View view = LayoutInflater.from(c).inflate(R.layout.list_item , parent , false);
 
+        View view = LayoutInflater.from(c).inflate(R.layout.list_item, parent , false);
         //we need to get a copy of the keys used to access elements in the hashmap
         String[] keys = c.getResources().getStringArray(R.array.keys);
 
@@ -97,3 +93,5 @@ public class BookListAdapter extends BaseAdapter {
         return view;
     }
 }
+
+

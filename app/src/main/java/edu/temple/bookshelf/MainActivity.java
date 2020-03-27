@@ -8,13 +8,17 @@ import android.os.Bundle;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class MainActivity extends AppCompatActivity implements ListFragment.bookClickedInterface{
+public class MainActivity extends AppCompatActivity implements ListFragment.BookClickedInterface{
+
+    boolean hasMultiPane;   //true if theres enough room for >1 fragment
+    DetailFragment detailFragment;  //copy of the detail fragment
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Resources resources = getResources();
+
+        Resources resources = getResources();   //copy of resources
 
         //TODO: put this in a worker function
         String[] keys = resources.getStringArray(R.array.keys);
@@ -31,15 +35,40 @@ public class MainActivity extends AppCompatActivity implements ListFragment.book
             books.add(temp);
         }
 
+        //always draw the list fragment, regardless of the screen layout
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.listContainer, ListFragment.newInstance(books))
+                .addToBackStack(null)
+                .commit();
 
+
+        //if there's room, also draw the detail fragment
+        hasMultiPane = findViewById(R.id.detailContainer) != null;
+        if(hasMultiPane) {
+            detailFragment = new DetailFragment();
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.detailContainer, detailFragment)
+                    .commit();
+        }
     }
 
     @Override
     public void openDetails(HashMap<String, String> book) {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.detailContainer, DetailFragment.newInstance(book))
-                .addToBackStack(null)
-                .commit();
+        //TODO: should either of these be add instead of replace?
+        if(hasMultiPane){
+            //replace detailContainer with a new instance given book
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.detailContainer, DetailFragment.newInstance(book))
+                    .commit();
+        } else { //replace the listView with the detailView
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.listContainer, DetailFragment.newInstance(book))
+                    .addToBackStack(null)
+                    .commit();
+        }
     }
 }

@@ -19,12 +19,11 @@ import java.util.HashMap;
  * create an instance of this fragment.
  */
 public class DetailFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "book";
 
-    // TODO: Rename and change types of parameters
-    private HashMap<String, String> book;
+    private HashMap<String, String> book;   //the book passed in
+    private View view;  //the view being created by this fragment
+
 
     // Required empty public constructor
     public DetailFragment(){}
@@ -37,7 +36,7 @@ public class DetailFragment extends Fragment {
      * @return A new instance of fragment DetailFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static DetailFragment newInstance(HashMap<String, String> hm) {
+     static DetailFragment newInstance(HashMap<String, String> hm) {
         DetailFragment fragment = new DetailFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_PARAM1, hm);
@@ -48,15 +47,18 @@ public class DetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
-            book = (HashMap<String, String>) getArguments().getSerializable(ARG_PARAM1);
-        }
+            try {   //should be casted as hashmap
+                this.book = (HashMap<String, String>) getArguments().getSerializable(ARG_PARAM1);
+            }catch (ClassCastException e) { e.printStackTrace(); }
+        }//TODO: why do you need this. here?
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_detail, container, false);
+        view = inflater.inflate(R.layout.fragment_detail, container, false);
 
         //we will need a set of keys to access the map
         String[] keys = getResources().getStringArray(R.array.keys);

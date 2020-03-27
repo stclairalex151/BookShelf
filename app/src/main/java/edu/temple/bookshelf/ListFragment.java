@@ -1,7 +1,9 @@
 package edu.temple.bookshelf;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.os.Parcelable;
@@ -24,6 +26,9 @@ public class ListFragment extends Fragment {
     private static final String ARG_PARAM1 = "list";    //bundle key for fragment
     private ArrayList<HashMap<String, String>> list;    //the "bookshelf"
 
+    //we need an instance of the interface used to commun. with parent
+    private BookClickedInterface parent;
+
     // Required empty public constructor
     public ListFragment(){}
 
@@ -34,7 +39,7 @@ public class ListFragment extends Fragment {
      * @param param1 Parameter 1.
      * @return A new instance of fragment ListFragment.
      */
-    public static ListFragment newInstance(ArrayList<HashMap<String, String>> param1) {
+     static ListFragment newInstance(ArrayList<HashMap<String, String>> param1) {
         ListFragment fragment = new ListFragment();
         Bundle args = new Bundle();
 
@@ -48,26 +53,38 @@ public class ListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            list = (ArrayList<HashMap<String, String>>) getArguments().getSerializable(ARG_PARAM1);
+            try {   //should be casted as arraylist<hashmap>
+                list = (ArrayList<HashMap<String, String>>) getArguments().getSerializable(ARG_PARAM1);
+            }catch (ClassCastException e) { e.printStackTrace(); }
         }
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        //sets parent as context, but conforming to bookClickedInterface
+        parent = (BookClickedInterface) context;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view;//the view being presented by this fragment
-
-        // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_list, container, false);
 
         //TODO: find the list, create and assign an adapter to the list, and set an onClickListener
         ListView listView = view.findViewById(R.id.listView);
-        BookListAdapter bookListAdapter = new BookListAdapter(getContext(), list);
+        listView.setAdapter(new BookListAdapter(getContext(), list));
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                bookClickedInterface.openDetails(list.get(position));
+                //TODO: parent.getItemAtPosition(position) instead of list.get(position) for openDetails?
+
+                try {   //should be casted as hashmap
+                    HashMap<String, String> book = (HashMap<String, String>) list.get(position);
+                    ListFragment.this.parent.openDetails(book);
+                }catch (ClassCastException e) { e.printStackTrace(); }
             }
         });
 
@@ -76,7 +93,7 @@ public class ListFragment extends Fragment {
 
     //This will be used to tell the activity which book has been pressed,
     //  so that the activity can build a fragment with the proper details
-    interface bookClickedInterface{
+    interface BookClickedInterface{
         void openDetails(HashMap<String, String> book);
     }
 
