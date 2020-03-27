@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 
 /**
@@ -21,7 +22,9 @@ public class DetailFragment extends Fragment {
     private static final String ARG_PARAM1 = "book";
 
     private HashMap<String, String> book;   //the book passed in
-
+    private TextView titleView; //view object for the title
+    private TextView authorView;    //view object for the author
+    private String[] keys;              //copy of keys needed to access hashmap
 
     // Required empty public constructor
     public DetailFragment(){}
@@ -47,10 +50,8 @@ public class DetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            try {   //should be casted as hashmap
-                this.book = (HashMap<String, String>) getArguments().getSerializable(ARG_PARAM1);
-            }catch (ClassCastException e) { e.printStackTrace(); }
-        }//TODO: why do you need this. here?
+            book = (HashMap<String, String>) getArguments().getSerializable(ARG_PARAM1);
+        }
     }
 
     @Override
@@ -60,15 +61,20 @@ public class DetailFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_detail, container, false);
 
         //we will need a set of keys to access the map
-        String[] keys = getResources().getStringArray(R.array.keys);
+        keys = getResources().getStringArray(R.array.keys);
 
         //declare the two views that exist in the detailfragment
-        TextView titleView = view.findViewById(R.id.titleView);
-        TextView authorView = view.findViewById(R.id.authorView);
+        titleView = view.findViewById(R.id.titleView);
+        authorView = view.findViewById(R.id.authorView);
 
         titleView.setText(book.get(keys[0]));
         authorView.setText(book.get(keys[1]));
 
         return view;
+    }
+
+    void changeView(HashMap<String, String> book) {
+        titleView.setText(book.get(keys[0]));
+        authorView.setText(book.get(keys[1]));
     }
 }

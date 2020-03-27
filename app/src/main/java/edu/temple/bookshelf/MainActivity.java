@@ -12,6 +12,7 @@ public class MainActivity extends AppCompatActivity implements ListFragment.Book
 
     boolean hasMultiPane;   //true if theres enough room for >1 fragment
     DetailFragment detailFragment;  //copy of the detail fragment
+    ArrayList<HashMap<String, String>> books;   //list of books
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements ListFragment.Book
         String[] bookTitles = resources.getStringArray(R.array.bookTitles); //gets the array of book titles
         String[] bookAuthors = resources.getStringArray(R.array.bookAuthors);//gets the array of book authors
 
-        ArrayList<HashMap<String, String>> books = new ArrayList<>();//list of hashmaps
+        books = new ArrayList<>();//list of hashmaps
 
         //puts 10 hashmaps in the arraylist (all called temp) which have title and author
         for(int i = 0; i < bookTitles.length; i++){
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements ListFragment.Book
         //if there's room, also draw the detail fragment
         hasMultiPane = findViewById(R.id.detailContainer) != null;
         if(hasMultiPane) {
-            detailFragment = new DetailFragment();
+            detailFragment = DetailFragment.newInstance(books.get(0));
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.detailContainer, detailFragment)
@@ -55,14 +56,14 @@ public class MainActivity extends AppCompatActivity implements ListFragment.Book
     }
 
     @Override
-    public void openDetails(HashMap<String, String> book) {
+    public void openDetails(int pos) {
         //TODO: should either of these be add instead of replace?
+        HashMap<String, String> book = books.get(pos);  //book being selected
+
         if(hasMultiPane){
-            //replace detailContainer with a new instance given book
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.detailContainer, DetailFragment.newInstance(book))
-                    .commit();
+            //do not create a new fragment, just change values in existing fragment
+            detailFragment.changeView(book);
+
         } else { //replace the listView with the detailView
             getSupportFragmentManager()
                     .beginTransaction()

@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -75,8 +74,8 @@ public class BookListAdapter extends BaseAdapter implements ListAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         //view will be a list_item layout with two textviews
-
         View view = LayoutInflater.from(c).inflate(R.layout.list_item, parent , false);
+
         //we need to get a copy of the keys used to access elements in the hashmap
         String[] keys = c.getResources().getStringArray(R.array.keys);
 

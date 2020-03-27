@@ -80,10 +80,8 @@ public class ListFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //TODO: parent.getItemAtPosition(position) instead of list.get(position) for openDetails?
 
-                try {   //should be casted as hashmap
-                    HashMap<String, String> book = list.get(position);
-                    ListFragment.this.parent.openDetails(book);
-                }catch (ClassCastException e) { e.printStackTrace(); }
+                HashMap<String, String> book = list.get(position);
+                ListFragment.this.parent.openDetails(position);
             }
         });
 
@@ -93,7 +91,7 @@ public class ListFragment extends Fragment {
     //This will be used to tell the activity which book has been pressed,
     //  so that the activity can build a fragment with the proper details
     interface BookClickedInterface{
-        void openDetails(HashMap<String, String> book);
+        void openDetails(int pos);
     }
 
 }
