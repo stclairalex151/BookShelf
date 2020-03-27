@@ -6,7 +6,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,7 +81,7 @@ public class ListFragment extends Fragment {
                 //TODO: parent.getItemAtPosition(position) instead of list.get(position) for openDetails?
 
                 try {   //should be casted as hashmap
-                    HashMap<String, String> book = (HashMap<String, String>) list.get(position);
+                    HashMap<String, String> book = list.get(position);
                     ListFragment.this.parent.openDetails(book);
                 }catch (ClassCastException e) { e.printStackTrace(); }
             }

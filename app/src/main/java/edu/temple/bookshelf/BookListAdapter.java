@@ -1,7 +1,6 @@
 package edu.temple.bookshelf;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +13,8 @@ import java.util.HashMap;
 
 public class BookListAdapter extends BaseAdapter implements ListAdapter {
 
-    private Context c;
-    private ArrayList<HashMap<String, String>> books;
+    private final Context c;
+    private final ArrayList<HashMap<String, String>> books;
 
     BookListAdapter(Context c, ArrayList<HashMap<String, String>> books) {
         this.c = c;

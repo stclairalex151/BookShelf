@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.service.autofill.TextValueSanitizer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,6 @@ public class DetailFragment extends Fragment {
     private static final String ARG_PARAM1 = "book";
 
     private HashMap<String, String> book;   //the book passed in
-    private View view;  //the view being created by this fragment
 
 
     // Required empty public constructor
@@ -58,7 +56,8 @@ public class DetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_detail, container, false);
+        //the view being created by this fragment
+        View view = inflater.inflate(R.layout.fragment_detail, container, false);
 
         //we will need a set of keys to access the map
         String[] keys = getResources().getStringArray(R.array.keys);
