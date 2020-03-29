@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity implements ListFragment.Book
 
     @Override
     public void openDetails(int pos) {
-        //TODO: should either of these be add instead of replace?
         HashMap<String, String> book = books.get(pos);  //book being selected
 
         if(hasMultiPane){
