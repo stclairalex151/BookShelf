@@ -12,8 +12,8 @@ import java.util.HashMap;
 
 public class BookListAdapter extends BaseAdapter implements ListAdapter {
 
-    private final Context c;
-    private final ArrayList<HashMap<String, String>> books;
+    private final Context c;    //context for this adapter
+    private final ArrayList<HashMap<String, String>> books; //list being adapted
 
     BookListAdapter(Context c, ArrayList<HashMap<String, String>> books) {
         this.c = c;

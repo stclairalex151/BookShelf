@@ -22,11 +22,10 @@ import java.util.HashMap;
  * create an instance of this fragment.
  */
 public class ListFragment extends Fragment {
+
     private static final String ARG_PARAM1 = "list";    //bundle key for fragment
     private ArrayList<HashMap<String, String>> list;    //the "bookshelf"
-
-    //we need an instance of the interface used to commun. with parent
-    private BookClickedInterface parent;
+    private BookClickedInterface parent;                //instance of the interface used to commun. with parent
 
     // Required empty public constructor
     public ListFragment(){}
@@ -39,8 +38,8 @@ public class ListFragment extends Fragment {
      * @return A new instance of fragment ListFragment.
      */
      static ListFragment newInstance(ArrayList<HashMap<String, String>> param1) {
-        ListFragment fragment = new ListFragment();
-        Bundle args = new Bundle();
+        ListFragment fragment = new ListFragment(); //the fragment being created
+        Bundle args = new Bundle(); //bundle to accompany the new fragment
 
         //put the arrayList into the bundle for this fragment
         args.putSerializable(ARG_PARAM1, param1);
@@ -51,6 +50,8 @@ public class ListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //if the object was created with a list in the bundle, store it locally
         if (getArguments() != null) {
             try {   //should be casted as arraylist<hashmap>
                 list = (ArrayList<HashMap<String, String>>) getArguments().getSerializable(ARG_PARAM1);
@@ -63,7 +64,10 @@ public class ListFragment extends Fragment {
         super.onAttach(context);
 
         //sets parent as context, but conforming to bookClickedInterface
-        parent = (BookClickedInterface) context;
+        if(context instanceof BookClickedInterface)
+            parent = (BookClickedInterface) context;
+        else
+            throw new RuntimeException(context.toString() + "*** THIS NEEDS TO IMPLEMENT THE INTERFACE");
     }
 
     @Override
@@ -71,20 +75,18 @@ public class ListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list, container, false);
 
-        //TODO: find the list, create and assign an adapter to the list, and set an onClickListener
+        //get the list and set the adapter to it
         ListView listView = view.findViewById(R.id.listView);
         listView.setAdapter(new BookListAdapter(getContext(), list));
 
+        //set a listener on the list that opens a detail fragment with that item in the list
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //TODO: parent.getItemAtPosition(position) instead of list.get(position) for openDetails?
-
                 HashMap<String, String> book = list.get(position);
                 ListFragment.this.parent.openDetails(position);
             }
         });
-
         return view;
     }
 

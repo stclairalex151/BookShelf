@@ -22,9 +22,9 @@ public class DetailFragment extends Fragment {
     private static final String ARG_PARAM1 = "book";
 
     private HashMap<String, String> book;   //the book passed in
-    private TextView titleView; //view object for the title
-    private TextView authorView;    //view object for the author
-    private String[] keys;              //copy of keys needed to access hashmap
+    private TextView titleView;             //view object for the title
+    private TextView authorView;            //view object for the author
+    private String[] keys;                  //copy of keys needed to access hashmap
 
     // Required empty public constructor
     public DetailFragment(){}
@@ -36,10 +36,11 @@ public class DetailFragment extends Fragment {
      * @param hm the hashmap object.
      * @return A new instance of fragment DetailFragment.
      */
-    // TODO: Rename and change types and number of parameters
      static DetailFragment newInstance(HashMap<String, String> hm) {
         DetailFragment fragment = new DetailFragment();
         Bundle args = new Bundle();
+
+        //but the book into the bundle
         args.putSerializable(ARG_PARAM1, hm);
         fragment.setArguments(args);
         return fragment;
@@ -49,6 +50,7 @@ public class DetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //if this object was created with a book in the bundle, store the book from it
         if (getArguments() != null) {
             book = (HashMap<String, String>) getArguments().getSerializable(ARG_PARAM1);
         }
