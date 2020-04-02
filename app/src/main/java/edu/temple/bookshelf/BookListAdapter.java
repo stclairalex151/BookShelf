@@ -13,9 +13,9 @@ import java.util.HashMap;
 public class BookListAdapter extends BaseAdapter implements ListAdapter {
 
     private final Context c;    //context for this adapter
-    private final ArrayList<HashMap<String, String>> books; //list being adapted
+    private final ArrayList<Book> books; //list being adapted
 
-    BookListAdapter(Context c, ArrayList<HashMap<String, String>> books) {
+    BookListAdapter(Context c, ArrayList<Book> books) {
         this.c = c;
         this.books = books;
     }
@@ -76,16 +76,13 @@ public class BookListAdapter extends BaseAdapter implements ListAdapter {
         //view will be a list_item layout with two textviews
         View view = LayoutInflater.from(c).inflate(R.layout.list_item, parent , false);
 
-        //we need to get a copy of the keys used to access elements in the hashmap
-        String[] keys = c.getResources().getStringArray(R.array.keys);
-
         //construct two textViews, one for title and one for author
         TextView titleView = view.findViewById(R.id.titleView);
-        titleView.setText(books.get(position).get(keys[0]));//retrieves the title and sets the text
+        titleView.setText(books.get(position).getTitle());  //retrieves the title and sets the text
         titleView.setId(position);   //Give this item an ID or value so it can be retrieved later
 
         TextView authorView = view.findViewById(R.id.authorView);
-        authorView.setText(books.get(position).get(keys[1]));//retrieves the author and sets the text
+        authorView.setText(books.get(position).getAuthor());//retrieves the author and sets the text
         authorView.setId(position);   //Give this item an ID or value so it can be retrieved later
 
         return view;

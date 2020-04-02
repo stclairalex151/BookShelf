@@ -24,7 +24,7 @@ import java.util.HashMap;
 public class ListFragment extends Fragment {
 
     private static final String ARG_PARAM1 = "list";    //bundle key for fragment
-    private ArrayList<HashMap<String, String>> list;    //the "bookshelf"
+    private ArrayList<Book> list;                       //the "bookshelf"
     private BookClickedInterface parent;                //instance of the interface used to commun. with parent
 
     // Required empty public constructor
@@ -37,7 +37,7 @@ public class ListFragment extends Fragment {
      * @param param1 Parameter 1.
      * @return A new instance of fragment ListFragment.
      */
-     static ListFragment newInstance(ArrayList<HashMap<String, String>> param1) {
+     static ListFragment newInstance(ArrayList<Book> param1) {
         ListFragment fragment = new ListFragment(); //the fragment being created
         Bundle args = new Bundle(); //bundle to accompany the new fragment
 
@@ -54,7 +54,7 @@ public class ListFragment extends Fragment {
         //if the object was created with a list in the bundle, store it locally
         if (getArguments() != null) {
             try {   //should be casted as arraylist<hashmap>
-                list = (ArrayList<HashMap<String, String>>) getArguments().getSerializable(ARG_PARAM1);
+                list = (ArrayList<Book>) getArguments().getSerializable(ARG_PARAM1);
             }catch (ClassCastException e) { e.printStackTrace(); }
         }
     }
@@ -83,7 +83,7 @@ public class ListFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                HashMap<String, String> book = list.get(position);
+                Book book = list.get(position);
                 ListFragment.this.parent.openDetails(position);
             }
         });
@@ -95,5 +95,4 @@ public class ListFragment extends Fragment {
     interface BookClickedInterface{
         void openDetails(int pos);
     }
-
 }

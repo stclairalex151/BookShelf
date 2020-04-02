@@ -21,10 +21,9 @@ import java.util.LinkedHashMap;
 public class DetailFragment extends Fragment {
     private static final String ARG_PARAM1 = "book";
 
-    private HashMap<String, String> book;   //the book passed in
+    private Book book;   //the book passed in
     private TextView titleView;             //view object for the title
     private TextView authorView;            //view object for the author
-    private String[] keys;                  //copy of keys needed to access hashmap
 
     // Required empty public constructor
     public DetailFragment(){}
@@ -33,15 +32,15 @@ public class DetailFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param hm the hashmap object.
+     * @param b the hashmap object.
      * @return A new instance of fragment DetailFragment.
      */
-     static DetailFragment newInstance(HashMap<String, String> hm) {
+     static DetailFragment newInstance(Book b) {
         DetailFragment fragment = new DetailFragment();
         Bundle args = new Bundle();
 
         //but the book into the bundle
-        args.putSerializable(ARG_PARAM1, hm);
+        args.putSerializable(ARG_PARAM1, b);
         fragment.setArguments(args);
         return fragment;
     }
@@ -52,7 +51,7 @@ public class DetailFragment extends Fragment {
 
         //if this object was created with a book in the bundle, store the book from it
         if (getArguments() != null) {
-            book = (HashMap<String, String>) getArguments().getSerializable(ARG_PARAM1);
+            book = (Book) getArguments().getSerializable(ARG_PARAM1);
         }
     }
 
@@ -62,21 +61,18 @@ public class DetailFragment extends Fragment {
         //the view being created by this fragment
         View view = inflater.inflate(R.layout.fragment_detail, container, false);
 
-        //we will need a set of keys to access the map
-        keys = getResources().getStringArray(R.array.keys);
-
         //declare the two views that exist in the detailfragment
         titleView = view.findViewById(R.id.titleView);
         authorView = view.findViewById(R.id.authorView);
 
-        titleView.setText(book.get(keys[0]));
-        authorView.setText(book.get(keys[1]));
+        titleView.setText(book.getTitle());
+        authorView.setText(book.getAuthor());
 
         return view;
     }
 
-    void changeView(HashMap<String, String> book) {
-        titleView.setText(book.get(keys[0]));
-        authorView.setText(book.get(keys[1]));
+    void changeView(Book book) {
+        titleView.setText(book.getTitle());
+        authorView.setText(book.getAuthor());
     }
 }

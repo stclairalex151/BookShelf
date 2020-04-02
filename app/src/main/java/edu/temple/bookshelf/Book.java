@@ -1,6 +1,8 @@
 package edu.temple.bookshelf;
 
-class Book {
+import java.io.Serializable;
+
+class Book implements Serializable {
     private static int idCount = -1; //static variable used to create unique ID's
 
     private int id;         //the id of the current book

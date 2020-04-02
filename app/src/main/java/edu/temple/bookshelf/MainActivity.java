@@ -7,16 +7,16 @@ import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity implements ListFragment.BookClickedInterface{
 
-    boolean hasMultiPane;   //true if theres enough room for >1 fragment
+    boolean hasMultiPane;           //true if there's enough room for > 1 fragment
     DetailFragment detailFragment;  //copy of the detail fragment
-    ArrayList<HashMap<String, String>> books;   //list of books
+    ArrayList<Book> books;          //list of books
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        buildShelf();   //sets up the arraylist of books
+        //buildShelf();   //sets up the arraylist of books
 
         //always draw the list fragment, regardless of the screen layout
         getSupportFragmentManager()
@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements ListFragment.Book
 
     @Override
     public void openDetails(int pos) {
-        HashMap<String, String> book = books.get(pos);  //book being selected
+        Book book = books.get(pos);  //book being selected
 
         if(hasMultiPane){
             //do not create a new detail fragment, just change values in existing fragment
@@ -58,20 +58,19 @@ public class MainActivity extends AppCompatActivity implements ListFragment.Book
      * and uses them to build an ArrayList of book (Hashmap) objects
      * (MODIFIES THE LOCAL VARIABLE BOOKS)
      */
-    private void buildShelf(){
+    /*private void buildShelf(){
         Resources resources = getResources();   //copy of resources
-        String[] keys = resources.getStringArray(R.array.keys);
         String[] bookTitles = resources.getStringArray(R.array.bookTitles); //gets the array of book titles
         String[] bookAuthors = resources.getStringArray(R.array.bookAuthors);//gets the array of book authors
 
-        books = new ArrayList<>();//list of hashmaps
+        books = new ArrayList<>();//list of books
 
-        //puts 10 hashmaps in the arraylist (all called temp) which have title and author
+        //puts 10 books in the arraylist (all called temp) which have title and author
         for(int i = 0; i < bookTitles.length; i++){
-            HashMap<String, String> temp = new HashMap<>();
+            Book temp = new Book();
             temp.put(keys[0], bookTitles[i]);
             temp.put(keys[1], bookAuthors[i]);
             books.add(temp);
         }
-    }
+    } */
 }
