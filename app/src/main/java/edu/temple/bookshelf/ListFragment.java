@@ -93,10 +93,12 @@ public class ListFragment extends Fragment {
         return view;
     }
 
-    public void update(ArrayList<Book> books) {
+    /**
+     * Reset the book list to the new one passed in
+     * @param books the new list of books to be used by the fragment
+     */
+    void update(ArrayList<Book> books) {
          list = books;
-
-         Log.d("MSG", "update: " + list.size());
          bookListAdapter.notifyDataSetChanged();
     }
 

@@ -77,16 +77,17 @@ public class BookListAdapter extends BaseAdapter implements ListAdapter {
      */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        //view will be a list_item layout with two textviews
+
         View view = convertView;
         CompleteListHolder viewHolder;
-        if(convertView == null){
+        if(convertView == null){    //if nothing was in the view before
             view = LayoutInflater.from(c).inflate(R.layout.list_item, parent , false);
             viewHolder = new CompleteListHolder(view);
             view.setTag(viewHolder);
-        }else{
+        }else{  // if this view is being re-used
             viewHolder = (CompleteListHolder) view.getTag();
         }
+
         viewHolder.textView1.setText(books.get(position).getTitle());
         viewHolder.textView2.setText(books.get(position).getAuthor());
 
@@ -98,7 +99,7 @@ class CompleteListHolder {
     TextView textView1;
     TextView textView2;
 
-    public CompleteListHolder(View base) {
+     CompleteListHolder(View base) {
         textView1 = base.findViewById(R.id.titleView);
         textView2 = base.findViewById(R.id.authorView);
     }

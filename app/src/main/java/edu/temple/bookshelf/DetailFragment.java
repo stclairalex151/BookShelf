@@ -21,9 +21,9 @@ import java.util.LinkedHashMap;
 public class DetailFragment extends Fragment {
     private static final String ARG_PARAM1 = "book";
 
-    private Book book;   //the book passed in
-    private TextView titleView;             //view object for the title
-    private TextView authorView;            //view object for the author
+    private Book book;              //the book passed in
+    private TextView titleView;     //view object for the title
+    private TextView authorView;    //view object for the author
 
     // Required empty public constructor
     public DetailFragment(){}
@@ -65,10 +65,8 @@ public class DetailFragment extends Fragment {
         titleView = view.findViewById(R.id.titleView);
         authorView = view.findViewById(R.id.authorView);
 
-        if(book != null) {
-            titleView.setText(book.getTitle());
-            authorView.setText(book.getAuthor());
-        }
+        if(book != null) //if the book passed to this fragment has data, set it
+            changeView(book);
 
         return view;
     }
