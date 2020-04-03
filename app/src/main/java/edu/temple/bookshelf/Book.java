@@ -3,20 +3,19 @@ package edu.temple.bookshelf;
 import java.io.Serializable;
 
 class Book implements Serializable {
-    private static int idCount = -1; //static variable used to create unique ID's
 
     private int id;         //the id of the current book
     private String title;   //the title of the book
     private String author;  //the author of the book
     private String coverURL;//the URL to the image showing the book cover
 
-    public Book(String title, String author, String coverURL) {
+
+
+    public Book(int id, String title, String author, String coverURL) {
+        this.id = id;
         this.title = title;
         this.author = author;
         this.coverURL = coverURL;
-
-        //generate a unique ID for the book
-        this.id = idCount++;
     }
 
     /**
@@ -60,4 +59,10 @@ class Book implements Serializable {
      * @param url the URL of the new image
      */
     void setCoverURL(String url){ coverURL = url; }
+
+    /**
+     * Setter for the book Id
+     * @param id the ID of the new book
+     */
+    public void setId(int id) { this.id = id; }
 }

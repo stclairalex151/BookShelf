@@ -1,6 +1,7 @@
 package edu.temple.bookshelf;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +28,10 @@ public class BookListAdapter extends BaseAdapter implements ListAdapter {
      */
     @Override
     public int getCount() {
-        return books.size();
+        if(books == null )
+            return 0;
+        else
+            return books.size();
     }
 
     /**
@@ -74,18 +78,29 @@ public class BookListAdapter extends BaseAdapter implements ListAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         //view will be a list_item layout with two textviews
-        View view = LayoutInflater.from(c).inflate(R.layout.list_item, parent , false);
-
-        //construct two textViews, one for title and one for author
-        TextView titleView = view.findViewById(R.id.titleView);
-        titleView.setText(books.get(position).getTitle());  //retrieves the title and sets the text
-        titleView.setId(position);   //Give this item an ID or value so it can be retrieved later
-
-        TextView authorView = view.findViewById(R.id.authorView);
-        authorView.setText(books.get(position).getAuthor());//retrieves the author and sets the text
-        authorView.setId(position);   //Give this item an ID or value so it can be retrieved later
+        View view = convertView;
+        CompleteListHolder viewHolder;
+        if(convertView == null){
+            view = LayoutInflater.from(c).inflate(R.layout.list_item, parent , false);
+            viewHolder = new CompleteListHolder(view);
+            view.setTag(viewHolder);
+        }else{
+            viewHolder = (CompleteListHolder) view.getTag();
+        }
+        viewHolder.textView1.setText(books.get(position).getTitle());
+        viewHolder.textView2.setText(books.get(position).getAuthor());
 
         return view;
+    }
+}
+
+class CompleteListHolder {
+    TextView textView1;
+    TextView textView2;
+
+    public CompleteListHolder(View base) {
+        textView1 = base.findViewById(R.id.titleView);
+        textView2 = base.findViewById(R.id.authorView);
     }
 }
 

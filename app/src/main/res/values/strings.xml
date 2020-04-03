@@ -1,35 +1,5 @@
 <resources>
     <string name="app_name">BookShelf</string>
-
-    <string-array name="bookTitles">
-        <item>The Mirror &amp; The Light</item>
-        <item>Where the Crawdads Sing</item>
-        <item>Untamed</item>
-        <item>The Mamba Mentality: How I Play</item>
-        <item>Little Fires Everywhere</item>
-        <item>Normal People</item>
-        <item>Capital and Ideology</item>
-        <item>Becoming</item>
-        <item>The Hunting Party</item>
-        <item>Thinking, Fast and Slow</item>
-    </string-array>
-
-    <string-array name="bookAuthors">
-        <item>Hilary Mantel</item>
-        <item>Delia Owens</item>
-        <item>Glennon Doyle</item>
-        <item>Kobe Bryant</item>
-        <item>Celeste Ng</item>
-        <item>Sally Rooney</item>
-        <item>Thomas Piketty</item>
-        <item>Michelle Obama</item>
-        <item>Lucy Foley</item>
-        <item>Daniel Kahneman</item>
-    </string-array>
-
-    <string-array name="keys">
-        <item>title</item>
-        <item>author</item>
-    </string-array>
-
+    <string name="search">Search</string>
+    <string name="book_cover_image">Book Cover Image</string>
 </resources>

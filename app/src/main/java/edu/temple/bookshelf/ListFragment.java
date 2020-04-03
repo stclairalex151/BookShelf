@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,8 @@ public class ListFragment extends Fragment {
     private static final String ARG_PARAM1 = "list";    //bundle key for fragment
     private ArrayList<Book> list;                       //the "bookshelf"
     private BookClickedInterface parent;                //instance of the interface used to commun. with parent
+    private BookListAdapter bookListAdapter;            //copy of the adapter object
+
 
     // Required empty public constructor
     public ListFragment(){}
@@ -53,10 +56,10 @@ public class ListFragment extends Fragment {
 
         //if the object was created with a list in the bundle, store it locally
         if (getArguments() != null) {
-            try {   //should be casted as arraylist<hashmap>
-                list = (ArrayList<Book>) getArguments().getSerializable(ARG_PARAM1);
-            }catch (ClassCastException e) { e.printStackTrace(); }
+            list = (ArrayList<Book>) getArguments().getSerializable(ARG_PARAM1);
         }
+
+        bookListAdapter = new BookListAdapter(getContext(), list);
     }
 
     @Override
@@ -77,7 +80,7 @@ public class ListFragment extends Fragment {
 
         //get the list and set the adapter to it
         ListView listView = view.findViewById(R.id.listView);
-        listView.setAdapter(new BookListAdapter(getContext(), list));
+        listView.setAdapter(bookListAdapter);
 
         //set a listener on the list that opens a detail fragment with that item in the list
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -88,6 +91,13 @@ public class ListFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    public void update(ArrayList<Book> books) {
+         list = books;
+
+         Log.d("MSG", "update: " + list.size());
+         bookListAdapter.notifyDataSetChanged();
     }
 
     //This will be used to tell the activity which book has been pressed,

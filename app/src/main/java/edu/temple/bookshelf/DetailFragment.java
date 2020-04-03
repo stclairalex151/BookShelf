@@ -65,8 +65,10 @@ public class DetailFragment extends Fragment {
         titleView = view.findViewById(R.id.titleView);
         authorView = view.findViewById(R.id.authorView);
 
-        titleView.setText(book.getTitle());
-        authorView.setText(book.getAuthor());
+        if(book != null) {
+            titleView.setText(book.getTitle());
+            authorView.setText(book.getAuthor());
+        }
 
         return view;
     }
