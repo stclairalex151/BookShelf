@@ -1,19 +1,15 @@
 package edu.temple.bookshelf;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -82,8 +78,8 @@ public class MainActivity extends AppCompatActivity implements ListFragment.Book
                                                 jsonObject.getString("cover_url")
                                         ); //declare a new book
 
-                                        books.add(b);   //add the new book to the list
-                                        listFragment.update(books);//update the fragment to the new list
+                                        books.add(b);               //add the new book to the list
+                                        listFragment.update(books); //update the fragment to the new list
                                     }catch(JSONException e){
                                         e.printStackTrace();
                                     }

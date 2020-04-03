@@ -7,7 +7,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -24,6 +27,7 @@ public class DetailFragment extends Fragment {
     private Book book;              //the book passed in
     private TextView titleView;     //view object for the title
     private TextView authorView;    //view object for the author
+    private ImageView coverPhoto;   //view object for the cover photo
 
     // Required empty public constructor
     public DetailFragment(){}
@@ -64,6 +68,7 @@ public class DetailFragment extends Fragment {
         //declare the two views that exist in the detailfragment
         titleView = view.findViewById(R.id.titleView);
         authorView = view.findViewById(R.id.authorView);
+        coverPhoto = view.findViewById(R.id.imageView);
 
         if(book != null) //if the book passed to this fragment has data, set it
             changeView(book);
@@ -74,5 +79,9 @@ public class DetailFragment extends Fragment {
     void changeView(Book book) {
         titleView.setText(book.getTitle());
         authorView.setText(book.getAuthor());
+
+        //set the cover photo
+        Picasso.get().load(book.getCoverURL()).into(coverPhoto);
+
     }
 }
