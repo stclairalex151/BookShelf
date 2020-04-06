@@ -9,8 +9,7 @@ class Book implements Serializable {
     private String author;  //the author of the book
     private String coverURL;//the URL to the image showing the book cover
 
-
-
+    //constructor
     public Book(int id, String title, String author, String coverURL) {
         this.id = id;
         this.title = title;

@@ -6,7 +6,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 
 /**
@@ -24,10 +22,11 @@ import java.util.HashMap;
  */
 public class ListFragment extends Fragment {
 
-    private static final String ARG_PARAM1 = "list";    //bundle key for fragment
-    private ArrayList<Book> list;                       //the "bookshelf"
-    private BookClickedInterface parent;                //instance of the interface used to commun. with parent
-    private BookListAdapter bookListAdapter;            //copy of the adapter object
+    private static final String ARG_PARAM1 = "list";        //bundle key for fragment
+    private static final String STATE_PARAM1 = "currentList";   //key for the list when saving instance state
+    private ArrayList<Book> list;                           //the "bookshelf"
+    private BookClickedInterface parent;                    //instance of the interface used to commun. with parent
+    private BookListAdapter bookListAdapter;                //copy of the adapter object
 
 
     // Required empty public constructor
@@ -51,6 +50,13 @@ public class ListFragment extends Fragment {
     }
 
     @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putSerializable(ARG_PARAM1, list);
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -58,6 +64,10 @@ public class ListFragment extends Fragment {
         if (getArguments() != null) {
             list = (ArrayList<Book>) getArguments().getSerializable(ARG_PARAM1);
         }
+
+//        if(savedInstanceState != null){
+//            list = (ArrayList<Book>) savedInstanceState.getSerializable(STATE_PARAM1);
+//        }
 
         bookListAdapter = new BookListAdapter(getContext(), list);
     }
@@ -86,8 +96,7 @@ public class ListFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Book book = list.get(position);
-                ListFragment.this.parent.openDetails(position);
+                ListFragment.this.parent.openBookDetails(position);
             }
         });
         return view;
@@ -105,6 +114,6 @@ public class ListFragment extends Fragment {
     //This will be used to tell the activity which book has been pressed,
     //  so that the activity can build a fragment with the proper details
     interface BookClickedInterface{
-        void openDetails(int pos);
+        void openBookDetails(int pos);
     }
 }
