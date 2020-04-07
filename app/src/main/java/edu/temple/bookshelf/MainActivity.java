@@ -1,4 +1,5 @@
 package edu.temple.bookshelf;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,9 +15,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements ListFragment.BookClickedInterface{
 
@@ -77,7 +76,6 @@ public class MainActivity extends AppCompatActivity implements ListFragment.Book
             book = null;
             listFragment = ListFragment.newInstance(books);
             detailFragment = new DetailFragment();
-
 
             //always draw the list fragment, regardless of the screen layout
             getSupportFragmentManager()
