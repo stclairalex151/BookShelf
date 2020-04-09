@@ -5,16 +5,18 @@ import java.io.Serializable;
 class Book implements Serializable {
 
     private int id;         //the id of the current book
+    private int duration;   //the duration of the audio book file
     private String title;   //the title of the book
     private String author;  //the author of the book
     private String coverURL;//the URL to the image showing the book cover
 
     //constructor
-    public Book(int id, String title, String author, String coverURL) {
+    public Book(int id, String title, String author, String coverURL, int duration) {
         this.id = id;
         this.title = title;
         this.author = author;
         this.coverURL = coverURL;
+        this.duration = duration;
     }
 
     /**
@@ -42,6 +44,12 @@ class Book implements Serializable {
     String getCoverURL(){ return coverURL;}
 
     /**
+     * Getter for the audio duration
+     * @return the duration of the audio file in seconds
+     */
+    int getDuration(){ return duration;}
+
+    /**
      * Setter for the title
      * @param t the new title
      */
@@ -64,4 +72,11 @@ class Book implements Serializable {
      * @param id the ID of the new book
      */
     public void setId(int id) { this.id = id; }
+
+    /**
+     * Setter for the audio file duration
+     * @param duration the duration of the audio file,
+     *                in seconds
+     */
+    public void setDuration(int duration) {this.duration = duration;}
 }
