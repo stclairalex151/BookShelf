@@ -113,7 +113,8 @@ public class MainActivity extends AppCompatActivity implements ListFragment.Book
                                                 jsonObject.getInt("book_id"),
                                                 jsonObject.getString("title"),
                                                 jsonObject.getString("author"),
-                                                jsonObject.getString("cover_url")
+                                                jsonObject.getString("cover_url"),
+                                                jsonObject.getInt("duration")
                                         ); //declare a new book
 
                                         books.add(b);               //add the new book to the list
