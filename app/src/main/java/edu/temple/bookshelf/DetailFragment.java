@@ -1,12 +1,15 @@
 package edu.temple.bookshelf;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,6 +31,8 @@ public class DetailFragment extends Fragment {
     private TextView titleView;     //view object for the title
     private TextView authorView;    //view object for the author
     private ImageView coverPhoto;   //view object for the cover photo
+    private Button playButton;
+    AudioPlayInterface parent;
 
     // Required empty public constructor
     public DetailFragment(){}
@@ -60,6 +65,16 @@ public class DetailFragment extends Fragment {
     }
 
     @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if(context instanceof AudioPlayInterface){
+            parent = (AudioPlayInterface) context;
+        } else {
+            throw new RuntimeException(context.toString() + "Implement interface!");
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         //the view being created by this fragment
@@ -69,19 +84,34 @@ public class DetailFragment extends Fragment {
         titleView = view.findViewById(R.id.titleView);
         authorView = view.findViewById(R.id.authorView);
         coverPhoto = view.findViewById(R.id.imageView);
+        playButton = view.findViewById(R.id.playButton);
 
         if(book != null) //if the book passed to this fragment has data, set it
             changeView(book);
 
+        playButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                parent.playAudio(book);
+            }
+        });
+
         return view;
     }
 
-    void changeView(Book book) {
-        titleView.setText(book.getTitle());
-        authorView.setText(book.getAuthor());
+    void changeView(Book newBook) {
+         book = newBook;
 
-        //set the cover photo
-        Picasso.get().load(book.getCoverURL()).into(coverPhoto);
+         titleView.setText(book.getTitle());
+         authorView.setText(book.getAuthor());
 
+         //set the cover photo
+         Picasso.get().load(book.getCoverURL()).into(coverPhoto);
+    }
+
+    //This will be used to tell the activity that the audio book should begin,
+    //  so that the activity can begin the service
+    interface AudioPlayInterface{
+        void playAudio(Book book);
     }
 }

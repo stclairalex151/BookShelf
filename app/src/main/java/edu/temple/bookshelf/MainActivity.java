@@ -2,10 +2,20 @@ package edu.temple.bookshelf;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.SeekBar;
+import android.widget.TextView;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -17,7 +27,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements ListFragment.BookClickedInterface{
+import edu.temple.audiobookplayer.AudiobookService;
+
+public class MainActivity extends AppCompatActivity implements ListFragment.BookClickedInterface,
+        DetailFragment.AudioPlayInterface{
 
     private static final String STATE_PARAM1 = "listFragment";
     private static final String STATE_PARAM2 = "newList";
@@ -31,6 +44,42 @@ public class MainActivity extends AppCompatActivity implements ListFragment.Book
     EditText searchBox;             //the search box
     Button searchButton;            //the search button
     Book book;                      //the book that has been chosen
+    TextView nowPlaying;
+    SeekBar seekBar;
+    Button pauseButton;
+    Button stopButton;
+    Intent audioServiceIntent;
+    boolean serviceConnected;
+    AudiobookService.MediaControlBinder mediaBinder;
+    Message bookProgressMessage;
+    AudiobookService.BookProgress bookProgress;
+    boolean paused;
+
+
+    ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            serviceConnected = true;
+            mediaBinder = (AudiobookService.MediaControlBinder) service;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            serviceConnected = false;
+            mediaBinder = null;
+        }
+    };
+
+    Handler progressHandler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(@NonNull Message msg) {
+            bookProgress = (AudiobookService.BookProgress) msg.obj;
+            if(!paused) {
+                seekBar.setProgress(bookProgress.getProgress());
+            }
+            return true;
+        }
+    });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +90,13 @@ public class MainActivity extends AppCompatActivity implements ListFragment.Book
         searchBox = findViewById(R.id.searchBox);
         searchButton = findViewById(R.id.searchButton);
         hasMultiPane = findViewById(R.id.detailContainer) != null;
+        nowPlaying = findViewById(R.id.nowPlaying);
+        seekBar = findViewById(R.id.seekBar);
+        pauseButton = findViewById(R.id.pauseButton);
+        stopButton = findViewById(R.id.stopButton);
+
+        audioServiceIntent = new Intent(MainActivity.this, edu.temple.audiobookplayer.AudiobookService.class);
+        bindService(audioServiceIntent, serviceConnection, BIND_AUTO_CREATE);
 
         if(savedInstanceState != null){     //if a fragment's state is saved
             books = (ArrayList<Book>) savedInstanceState.getSerializable(STATE_PARAM2);
@@ -133,6 +189,46 @@ public class MainActivity extends AppCompatActivity implements ListFragment.Book
                 requestQueue.add(jsonArrayRequest);
             }
         });
+
+        pauseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(serviceConnected && mediaBinder.isPlaying())
+                    paused = true;
+                else
+                    paused = false;
+
+                mediaBinder.pause();
+            }
+        });
+
+        stopButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (serviceConnected){
+                    mediaBinder.stop();
+                    seekBar.setProgress(0);
+                }
+            }
+        });
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if(fromUser)
+                    mediaBinder.seekTo(progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
     }
 
     @Override
@@ -147,6 +243,12 @@ public class MainActivity extends AppCompatActivity implements ListFragment.Book
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbindService(serviceConnection);
+    }
+
+    @Override
     public void openBookDetails(int pos) {
         book = books.get(pos);  //book being selected
 
@@ -158,6 +260,20 @@ public class MainActivity extends AppCompatActivity implements ListFragment.Book
                     .replace(R.id.listContainer, DetailFragment.newInstance(book))
                     .addToBackStack(null)
                     .commit();
+        }
+    }
+
+    @Override
+    public void playAudio(Book book) {
+        if(serviceConnected){
+
+            startService(audioServiceIntent);
+            mediaBinder.setProgressHandler(progressHandler);
+            mediaBinder.play(book.getId());
+            seekBar.setProgress(0);
+            seekBar.setMax(book.getDuration());
+            nowPlaying.setText("Now playing: " + book.getTitle() + " - " + book.getAuthor());
+            paused = false;
         }
     }
 }
