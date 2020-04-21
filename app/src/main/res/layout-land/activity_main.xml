@@ -2,8 +2,41 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/nowPlaying"
+        android:layout_width="135dp"
+        android:layout_height="86dp"
+        android:layout_marginTop="42dp"
+        android:text="@string/now_playing"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/detailContainer"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/pauseButton"
+        android:layout_width="76dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="50dp"
+        android:background="@android:drawable/ic_media_pause"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/detailContainer"
+        app:layout_constraintTop_toBottomOf="@+id/nowPlaying" />
+
+    <Button
+        android:id="@+id/stopButton"
+        style="@android:style/Widget.Button.Inset"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="25dp"
+        android:background="#9EFFFFFF"
+        android:text="@string/stop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/detailContainer"
+        app:layout_constraintTop_toBottomOf="@+id/pauseButton" />
 
     <EditText
         android:id="@+id/searchBox"
@@ -28,11 +61,14 @@
 
     <FrameLayout
         android:id="@+id/detailContainer"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_width="273dp"
+        android:layout_height="411dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/listContainer"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+    </FrameLayout>
 
     <Button
         android:id="@+id/searchButton"
@@ -44,5 +80,14 @@
         app:layout_constraintEnd_toStartOf="@+id/detailContainer"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchBox" />
+
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="209dp"
+        android:layout_height="29dp"
+        android:layout_marginTop="72dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/detailContainer"
+        app:layout_constraintTop_toBottomOf="@+id/stopButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

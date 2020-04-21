@@ -2,4 +2,6 @@
     <string name="app_name">BookShelf</string>
     <string name="search">Search</string>
     <string name="book_cover_image">Book Cover Image</string>
+    <string name="now_playing">Now playing:</string>
+    <string name="stop">Stop</string>
 </resources>
