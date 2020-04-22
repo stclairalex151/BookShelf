@@ -31,8 +31,8 @@ public class DetailFragment extends Fragment {
     private TextView titleView;     //view object for the title
     private TextView authorView;    //view object for the author
     private ImageView coverPhoto;   //view object for the cover photo
-    private Button playButton;
-    AudioPlayInterface parent;
+    private Button playButton;      //play button
+    private AudioPlayInterface parent;      //local copy of parent for implenting interface functions
 
     // Required empty public constructor
     public DetailFragment(){}

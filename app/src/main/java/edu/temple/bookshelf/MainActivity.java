@@ -44,18 +44,17 @@ public class MainActivity extends AppCompatActivity implements ListFragment.Book
     EditText searchBox;             //the search box
     Button searchButton;            //the search button
     Book book;                      //the book that has been chosen
-    TextView nowPlaying;
-    SeekBar seekBar;
-    Button pauseButton;
-    Button stopButton;
-    Intent audioServiceIntent;
-    boolean serviceConnected;
-    AudiobookService.MediaControlBinder mediaBinder;
-    Message bookProgressMessage;
-    AudiobookService.BookProgress bookProgress;
-    boolean paused;
+    TextView nowPlaying;            //the text box that shows what is playing
+    SeekBar seekBar;                //the slider to change duration of the audio
+    Button pauseButton;             //the pause button
+    Button stopButton;              //the stop button
+    Intent audioServiceIntent;      //intent object used for sending messages between the activity and the audio serice
+    boolean serviceConnected;       //flag for when a service has been created/started
+    AudiobookService.MediaControlBinder mediaBinder;    //object that contains functions for manipulating media
+    AudiobookService.BookProgress bookProgress;         //message object that contains duration data
+    boolean paused;                 //flag for when the audio has been paused
 
-
+    //object for connection to audio service
     ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -70,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements ListFragment.Book
         }
     };
 
+    //handler for the audio progress used for the seek bar
     Handler progressHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(@NonNull Message msg) {
@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements ListFragment.Book
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //instantiate the views
         requestQueue = Volley.newRequestQueue(this);
         searchBox = findViewById(R.id.searchBox);
         searchButton = findViewById(R.id.searchButton);
@@ -95,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements ListFragment.Book
         pauseButton = findViewById(R.id.pauseButton);
         stopButton = findViewById(R.id.stopButton);
 
+        //set up the intent
         audioServiceIntent = new Intent(MainActivity.this, edu.temple.audiobookplayer.AudiobookService.class);
         bindService(audioServiceIntent, serviceConnection, BIND_AUTO_CREATE);
 
@@ -190,18 +192,16 @@ public class MainActivity extends AppCompatActivity implements ListFragment.Book
             }
         });
 
+        //onClick for the pause button
         pauseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(serviceConnected && mediaBinder.isPlaying())
-                    paused = true;
-                else
-                    paused = false;
-
+                paused = serviceConnected && mediaBinder.isPlaying();
                 mediaBinder.pause();
             }
         });
 
+        //onClick for the stop button
         stopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -212,6 +212,7 @@ public class MainActivity extends AppCompatActivity implements ListFragment.Book
             }
         });
 
+        //onClick for the seek bar
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -263,15 +264,16 @@ public class MainActivity extends AppCompatActivity implements ListFragment.Book
         }
     }
 
+    //function from the BookClickedInterface that plays the audio when the play button is pressed
     @Override
     public void playAudio(Book book) {
         if(serviceConnected){
 
             startService(audioServiceIntent);
-            mediaBinder.setProgressHandler(progressHandler);
-            mediaBinder.play(book.getId());
-            seekBar.setProgress(0);
-            seekBar.setMax(book.getDuration());
+            mediaBinder.setProgressHandler(progressHandler);    //set up the handler for the progress bar
+            mediaBinder.play(book.getId()); //pass the book id into the API and begin playing
+            seekBar.setProgress(0);         //set the seek bar to 0
+            seekBar.setMax(book.getDuration()); //set the end of the seek bar to the duration of the song
             nowPlaying.setText("Now playing: " + book.getTitle() + " - " + book.getAuthor());
             paused = false;
         }
