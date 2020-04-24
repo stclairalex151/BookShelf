@@ -35,6 +35,8 @@ public class MainActivity extends AppCompatActivity implements ListFragment.Book
     private static final String STATE_PARAM1 = "listFragment";
     private static final String STATE_PARAM2 = "newList";
     private static final String STATE_PARAM3 = "newBook";
+    private static final String STATE_PARAM4 = "seekbarBinder";
+    private static final String STATE_PARAM5 = "nowPlayingText";
 
     boolean hasMultiPane;           //true if there's enough room for > 1 fragment
     DetailFragment detailFragment;  //copy of the detail fragment
@@ -105,7 +107,15 @@ public class MainActivity extends AppCompatActivity implements ListFragment.Book
             listFragment = (ListFragment) getSupportFragmentManager().getFragment(savedInstanceState, STATE_PARAM1);
             book = (Book) savedInstanceState.getSerializable(STATE_PARAM3);
             detailFragment = new DetailFragment();
+            mediaBinder = (AudiobookService.MediaControlBinder) savedInstanceState.getBinder(STATE_PARAM4);
+            mediaBinder.setProgressHandler(progressHandler);    //set up the handler for the progress bar
 
+            //also get the now playing text
+
+            if(mediaBinder.isPlaying()) {
+                seekBar.setMax(book.getDuration());
+                nowPlaying.setText(savedInstanceState.getString(STATE_PARAM5));
+            }
             //show the list fragment
             getSupportFragmentManager()
                     .beginTransaction()
@@ -239,8 +249,9 @@ public class MainActivity extends AppCompatActivity implements ListFragment.Book
         outState.putSerializable(STATE_PARAM2, books);
 
         getSupportFragmentManager().putFragment(outState, STATE_PARAM1, listFragment);
-        //getSupportFragmentManager().putFragment(outState, STATE_PARAM3, detailFragment);
         outState.putSerializable(STATE_PARAM3, book);
+        outState.putBinder(STATE_PARAM4, mediaBinder);
+        outState.putString(STATE_PARAM5, nowPlaying.getText().toString());
     }
 
     @Override
