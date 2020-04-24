@@ -1,7 +1,6 @@
 package edu.temple.bookshelf;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,13 +8,13 @@ import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class BookListAdapter extends BaseAdapter implements ListAdapter {
 
     private final Context c;    //context for this adapter
     private final ArrayList<Book> books; //list being adapted
 
+    //default constructor
     BookListAdapter(Context c, ArrayList<Book> books) {
         this.c = c;
         this.books = books;
@@ -95,6 +94,7 @@ public class BookListAdapter extends BaseAdapter implements ListAdapter {
     }
 }
 
+//for some reason, my program works only with a wrapper class for the listFragment items
 class CompleteListHolder {
     TextView textView1;
     TextView textView2;

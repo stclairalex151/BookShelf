@@ -25,14 +25,14 @@ import java.util.LinkedHashMap;
  * create an instance of this fragment.
  */
 public class DetailFragment extends Fragment {
-    private static final String ARG_PARAM1 = "book";
+    private static final String ARG_PARAM1 = "book";//the state param for the book object
 
-    private Book book;              //the book passed in
-    private TextView titleView;     //view object for the title
-    private TextView authorView;    //view object for the author
-    private ImageView coverPhoto;   //view object for the cover photo
-    private Button playButton;      //play button
-    private AudioPlayInterface parent;      //local copy of parent for implenting interface functions
+    private Book book;                  //the book passed in
+    private TextView titleView;         //view object for the title
+    private TextView authorView;        //view object for the author
+    private ImageView coverPhoto;       //view object for the cover photo
+    private Button playButton;          //play button
+    private AudioPlayInterface parent;  //local copy of parent for implenting interface functions
 
     // Required empty public constructor
     public DetailFragment(){}

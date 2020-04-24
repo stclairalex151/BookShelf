@@ -1,5 +1,4 @@
 package edu.temple.bookshelf;
-
 import java.io.Serializable;
 
 class Book implements Serializable {
